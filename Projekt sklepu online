@@ -1,0 +1,889 @@
+using DocumentFormat.OpenXml.ExtendedProperties;
+using System;
+using System.IO;
+using System.Text;
+
+//BAJO JAJO
+namespace Zadanie
+
+{
+    public class koszyk_klienta
+    {
+        public class usuwanko : koszyk_klienta
+        {
+            internal static void ulti_na_ryj(ref int urgot)
+            {
+                TextWriter twwt = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Suma cen.txt");
+                twwt.Close();
+                Console.WriteLine("Podaj Nr usuwanego produktu lub 0 aby wrócić do koszyka");
+                string elise = Console.ReadLine();
+                TextWriter twtw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+                twtw.Close();
+               
+                if(elise=="0")
+                {
+                    koszyk_klienta.koszyk();
+                    return;
+                }
+                if(Int32.Parse(elise)>urgot)
+                {
+                    Console.WriteLine("Błąd  Podaj liczbę od 1 do " + (urgot-1));                   
+                    koszyk_klienta.usuwanko.ulti_na_ryj(ref urgot);
+                    return;
+                }
+
+                if (Int32.TryParse(elise, out int number))
+
+                {
+                    int i = 0;
+                    string[] fizz = new string[urgot];
+                    string[] malphite = new string[urgot];
+                    string[] rammus = new string[urgot];
+                    string[] nie_tablica1 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\nazwa_produktu(cho_gath).txt");
+                    i = 0;
+                    foreach (string line in nie_tablica1)
+                    {
+                        fizz[i] = line;
+                        i++;
+
+                    }
+
+                    string[] nie_tablica2 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\ilosc_produktow(lee_sin).txt");
+                    i = 0;
+                    foreach (string line in nie_tablica2)
+                    {
+
+                        malphite[i] = line;
+                        i++;
+                    }
+
+                    string[] nie_tablica3 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\cena_jednostkowa(k_sante).txt");
+                    i = 0;
+                    foreach (string line in nie_tablica3)
+                    {
+
+                        rammus[i] = line;
+                        i++;
+                    }
+                    Console.WriteLine("Podaj ilosc ktora chcesz usunac: ");                 
+                    string x = Console.ReadLine();
+                    
+                    int h;
+                    int y = Int32.Parse(malphite[Int32.Parse(elise)-1]);
+                    if (Int32.Parse(x) <= y)
+                    {
+                        h = y - Int32.Parse(x);
+                        string h1 = h.ToString();
+                        malphite[Int32.Parse(elise) - 1] = h1;
+                        StreamWriter kassadin;
+                        kassadin = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+                        StreamWriter ashe;
+                        ashe = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Suma cen.txt");
+                        for (int j = 0; j < malphite.Length-1; j++)
+                        {
+                            kassadin.WriteLine(fizz[j]+" w ilosci x"+malphite[j] +" Cena: "+ Int32.Parse(rammus[j]) * Int32.Parse(malphite[j])+"zł");
+                            ashe.WriteLine(rammus[j]);
+                        }
+                        
+                        kassadin.Close();
+                        ashe.Close();
+                        koszyk_klienta.koszyk();
+                        return;
+                    }
+                    
+                        
+                }
+            }
+        }
+        
+        
+        internal static void faktura(ref int uwu)
+        {
+            StreamWriter kassadin;
+            int i = 0;         
+            kassadin = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\TextFile1.txt");
+            
+            Console.WriteLine("Podaj NIP");
+            string NIP = Console.ReadLine();
+            if (NIP.Length != 10)
+            {
+                Console.WriteLine("NIP ma 10 cyfr");
+                NIP = Console.ReadLine();
+
+            } 
+            Console.WriteLine("####################################################################\n"+ "\t\tF&J Sp. z o.o.\n"+ "\n\t\tNIP Klienta: " + NIP + "\n"+ "\n\t\tNIP SPRZEDAWCY: 2131233213\n");
+            string[] nie_tablica = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+            foreach (string line in nie_tablica)
+            {
+                Console.WriteLine("\t\t" + line);
+                i++;
+            }
+
+            string[] GODYR = new string[i];
+            i = 0;
+            foreach (string line in nie_tablica)
+            {
+                GODYR[i] = line;
+                i++;
+            }
+
+            DateTime dateTime = DateTime.Now;
+            double h = (uwu * 0.08);
+
+            Console.WriteLine("\n\t\tSUMA PTU 8%: " + Math.Round(h, 2));
+            Console.WriteLine("\t\tSUMA: " + uwu + "zł\n\t\t");
+            Console.WriteLine("\t\tData Wystawienia: " + dateTime.ToString() + "\n\t\tData Realizacji: " + dateTime.ToString());
+            Console.WriteLine("\n####################################################################");
+            kassadin.WriteLine("\t\t\t     FAKTURA");
+            kassadin.WriteLine("####################################################################\n");
+            kassadin.WriteLine("\t\tF&J Sp. z o.o.\n");
+            kassadin.WriteLine("\t\tNIP Klienta: " + NIP + "\n");
+            kassadin.WriteLine("\t\tNIP SPRZEDAWCY: 2131233213" );
+            for (int p = 0; p < GODYR.Length; p++)
+            {
+                kassadin.WriteLine("\t\t" + GODYR[p]);
+            }
+            kassadin.WriteLine("\n\t\tSUMA PTU 8%: " + Math.Round(h, 2));
+            kassadin.WriteLine("\t\tSUMA: " + uwu + "zł\n\t\t" );
+            kassadin.WriteLine("\t\tData Wystawienia: "+dateTime.ToString()+ "\n\t\tData Realizacji: " + dateTime.ToString());
+            kassadin.WriteLine("\n####################################################################");
+            kassadin.Close();
+            TextWriter twtw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+            twtw.Close();
+            TextWriter xd = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Suma cen.txt");
+            xd.Close();
+        }
+        internal static void paragon(ref int uwu)
+        {
+            StreamWriter kassadin;
+            int i = 0;
+            kassadin = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\TextFile1.txt");           
+            Console.WriteLine("####################################################################\n");
+            Console.WriteLine("\t\tF&J Sp. z o.o.\n" + "\n\t\tNIP SPRZEDAWCY: 2131233213\n");
+            string[] nie_tablica = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+            foreach (string line in nie_tablica)
+            {
+                Console.WriteLine("\t\t"+line);
+                i++;
+            }
+
+            string[] GODYR = new string[i];
+            i = 0;
+            foreach (string line in nie_tablica)
+            {
+                GODYR[i] = line;
+                i++;
+            }
+
+            DateTime dateTime = DateTime.Now;
+            double h = (uwu * 0.08);
+            
+            Console.WriteLine("\n\t\tSUMA PTU 8%: " + Math.Round(h, 2));
+            Console.WriteLine("\t\tSUMA: "+uwu+"zł\n\t\tData Realizacji: "+dateTime.ToString());
+            Console.WriteLine("\n####################################################################");
+            kassadin.WriteLine("\t\t\t     PARAGON");
+            kassadin.WriteLine("####################################################################\n"+ "\t\tF&J Sp. z o.o.\n"+ "\n\t\tNIP SPRZEDAWCY: 2131233213\n");
+            for (int p=0;p<GODYR.Length;p++)
+            {
+                kassadin.WriteLine("\t\t"+GODYR[p]);
+            }
+            kassadin.WriteLine("\n\t\tSUMA PTU 8%: " + Math.Round(h, 2));
+            kassadin.WriteLine("\t\tSUMA: " + uwu + "zł\n\t\t" + dateTime.ToString());
+            kassadin.WriteLine("\n####################################################################");
+            kassadin.Close();
+            TextWriter twtw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+            twtw.Close();
+            TextWriter xd = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Suma cen.txt");
+            xd.Close();
+        }
+
+        internal static void koszyk()
+        {
+            int urgot=1;
+            Console.WriteLine("\n");
+            string[] nie_tablica = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+            foreach (string line in nie_tablica)
+            {
+                Console.WriteLine(urgot+". "+line);
+                urgot++;
+            }
+            int u = 0;
+            string[] linie = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Suma cen.txt");
+            foreach (string linia in linie)
+            {
+                u++;
+            }
+            int[] suma_do_zaplaty = new int[u];
+            u = 0;
+            foreach (string linia in linie)
+            {
+                suma_do_zaplaty[u] = Int32.Parse(linia);
+                u++;
+            }
+            int uwu = 0;
+            for (int i = 0; suma_do_zaplaty.Length > i; i++)
+            {
+                uwu = uwu + suma_do_zaplaty[i];
+            }
+            if(u ==0)
+            {
+                Console.WriteLine("Koszyk jest pusty\n");
+                return;
+
+            }
+            Console.WriteLine("\nDo zapłaty: "+uwu+" zł\n");
+            Console.WriteLine("Wybierz 0 aby otrzymać fakturę lub 1 aby otrzymac paragon  2 aby dodać więcej produktów lub\n3 aby usunąć nie chciany produkt");
+            string faktura_lub_paragon = Console.ReadLine();
+            switch (faktura_lub_paragon)
+                {
+                case "0":
+                    {
+                        koszyk_klienta.faktura(ref uwu);
+                        break;
+                    }
+                case "1":
+                    {
+                        koszyk_klienta.paragon(ref uwu);
+                        break;
+                    }
+                case"2":
+                    {                       
+                        produkty.lista.listakategorii();
+                        break;
+                    }
+                case "3":
+                    {
+                        koszyk_klienta.usuwanko.ulti_na_ryj(ref urgot);
+                        break;
+                    }
+                    
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+    }
+
+    public class produkty
+
+    {
+        
+        public class obliczenie : produkty
+        {
+            public static void obliczeniaasortymentu(ref string[] lines, ref string[] lines1, ref string wybór, ref string[] lines2)
+            {
+                int u = 1;
+                foreach (string line in lines)
+                {
+                    u++;
+                }
+                string[] tab1 = new string[u];
+
+                string[] tab2 = new string[u];
+
+                string[] tab3 = new string[u];
+                int p = 0;
+                foreach (string line in lines)
+                {
+                    tab1[p] = line;
+
+
+                    p++;
+                }
+                p = 0;
+                foreach (string line in lines1)
+                {
+                    tab2[p] = line;
+                    p++;
+
+
+
+                }
+                p = 0;
+                foreach (string line in lines2)
+                {
+                    tab3[p] = line;
+
+
+                    p++;
+                }
+                p = 1;
+
+                for (int i = 0; i < tab1.Length - 1; i++)
+                {
+                    Console.WriteLine(p + "." + tab1[i] + " w ilosci x" + tab2[i] + " Cena: " + tab3[i] + "zł");
+                    p++;
+                }
+                wybor.twojwybor(ref tab2, ref tab1, ref wybór, ref tab3);
+            }
+
+        }
+        
+        
+        public class wybor : obliczenie
+
+        {
+            public static void twojwybor(ref string[] tab2, ref string[] tab1, ref string wybór, ref string[] tab3)
+            {
+                int y;
+                int suma_cen;
+                do
+                {
+
+
+                    int r;
+                    int h;
+                    string wybór3;
+                    do
+                    {
+                        Console.WriteLine("\nwpisz 0 aby wrócić do wyboru kategorii");
+                        Console.WriteLine("prosze wybrać produkt");
+
+
+                        r = tab2.Length;
+                        wybór3 = Console.ReadLine();
+                        int liczba = 0;
+                       
+                        h = Int32.Parse(wybór3);
+
+                        if (h > r - 1)
+
+                        {
+                            Console.WriteLine("podaj liczbę od 1 do " + (r - 1));
+
+                        }
+                    } while (h > (r - 1));
+                    if (wybór3 == "0")
+                    {
+                        produkty.lista.listakategorii();
+                        break;
+                    }
+                    
+                    if (wybór != "0")
+                    {
+                        Console.WriteLine("\nproszę podac ilosc lub 0 aby wybrać inny produkt");                      
+                        string ilosc =Console.ReadLine();
+                        if(Int32.Parse(ilosc)<0)
+                        {
+                            Console.Write("\t\tWitaj w tajnym miejscu\njesli jestes tu przez przypadek wpisz 0\nPodaj Hasło: ");
+                            string hasło;
+                            int i = 0;
+                            do 
+                            {
+                                hasło = Console.ReadLine();
+                                if (hasło =="0")
+                                {
+                                    ilosc = "0";
+                                    wybor.twojwybor();
+                                    
+                                    break;
+                                }
+                                if (hasło!="1234"&&i<3)
+                                {
+                                    Console.WriteLine("złe hasło");
+                                    Console.WriteLine("Podaj hasło");
+
+
+                                    i++;
+                                    
+                                }
+                                if (i == 3)
+                                {
+                                    ilosc = "0";
+                                    Console.WriteLine("\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!");
+                                    Thread.Sleep(1000000);
+                                }
+                            } while (hasło != "1234");
+
+                            int new_wybor = Int32.Parse(wybór3);
+                            int x = Int32.Parse(tab2[new_wybor - 1]);
+                            int new_ilosc = Int32.Parse(ilosc);
+                            y = x - new_ilosc;
+                            string ilosckoncowa = y.ToString();
+                            
+                            tab2[new_wybor - 1] = ilosckoncowa;
+                            int u = 0;
+                            for (int o = 0; o < tab2.Length; o++)
+                            {
+                                u++;
+                            }
+                            string[] tab6 = new string[u];
+                            for (int o = 0; o < tab2.Length; o++)
+                            {
+                                tab6[o] = tab2[o];
+                            }
+                            switch (wybór)
+                            {
+                                case "1":
+                                    zmiana.zmianaasortymentu_warzywa(ref tab6);
+
+                                    break;
+                                case "2":
+                                    zmiana.zmianaasortymentu_owoce(ref tab6);
+
+                                    break;
+                                case "3":
+                                    zmiana.zmianaasortymentu_alkohole(ref tab6);
+
+                                    break;
+                                case "4":
+                                    zmiana.zmianaasortymentu_platki(ref tab6);
+
+                                    break;
+                                case "5":
+                                    zmiana.zmianaasortymentu_przekaski(ref tab6);
+
+                                    break;
+                            }
+                            wybor.twojwybor();
+                            break;
+                        }
+                        if(ilosc == "0")
+                        {                           
+                            wybor.twojwybor();
+                        }
+                        if (Int32.TryParse(ilosc, out int number))
+                        {
+                            
+                        
+
+                        int new_wybor = Int32.Parse(wybór3);
+                        int x = Int32.Parse(tab2[new_wybor - 1]);
+                        int new_ilosc = Int32.Parse(ilosc);
+                            y = x - new_ilosc;
+
+
+                        
+
+                        if (y < 0)
+                        {
+                            Console.WriteLine("niepoprawna ilosc brak na stanie takiej ilosci");
+
+                        }
+                        else
+                        {
+                            string ilosckoncowa = y.ToString();
+                            tab2[new_wybor - 1] = ilosckoncowa;                           
+                            int u = 0;
+                            for (int i = 0; i < tab2.Length; i++)
+                            {
+                                u++;
+                            }
+                            string[] tab6 = new string[u];
+                            for (int i = 0; i < tab2.Length; i++)
+                            {
+                                tab6[i] = tab2[i];
+                            }
+                            StreamWriter sw,cho_gath,lee_sin,k_sante;
+                            sw = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+                            sw.WriteLine(tab1[h - 1] + " w ilosci x" + new_ilosc + " Cena: " + Int32.Parse(tab3[h - 1]) * new_ilosc + "zł");
+
+                            cho_gath = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\nazwa_produktu(cho_gath).txt");
+                            cho_gath.WriteLine(tab1[h - 1]);
+
+                            lee_sin = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\ilosc_produktow(lee_sin).txt");
+                            lee_sin.WriteLine(new_ilosc);
+
+                            k_sante = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\cena_jednostkowa(k_sante).txt");
+                            k_sante.WriteLine( Int32.Parse(tab3[h - 1]));
+
+
+                                sw.Close();
+                                cho_gath.Close();
+                                lee_sin.Close();
+                                k_sante.Close();
+                            suma_cen = Int32.Parse(tab3[h - 1]) * new_ilosc;
+                            StreamWriter suma;
+                            suma = File.AppendText(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Suma cen.txt");
+                            suma.WriteLine(suma_cen);
+                            suma.Close();
+                            switch (wybór)
+                            {
+                                case "1":
+                                    zmiana.zmianaasortymentu_warzywa(ref tab6);
+
+                                    break;
+                                case "2":
+                                    zmiana.zmianaasortymentu_owoce(ref tab6);
+
+                                    break;
+                                case "3":
+                                    zmiana.zmianaasortymentu_alkohole(ref tab6);
+
+                                    break;
+                                case "4":
+                                    zmiana.zmianaasortymentu_platki(ref tab6);
+
+                                    break;
+                                case "5":
+                                    zmiana.zmianaasortymentu_przekaski(ref tab6);
+
+                                    break;
+                            }
+                            
+                        }
+                        }
+                        else
+                        {
+                            wybor.twojwybor();
+                        }
+
+                    }
+                    
+                } while (true);
+                
+            }
+
+            internal static void twojwybor()
+            {
+
+            }
+
+            internal static void twojwybor(ref string[] tab2)
+            {
+
+            }
+        }
+        public class magazyn
+        {
+            internal static void magazynek()
+                {
+                string[] lines = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Asortyment.txt");
+
+
+                foreach (string line in lines)
+                {
+
+                    Console.WriteLine(line);
+                }
+                string wybór = Console.ReadLine();
+
+                switch (wybór)
+                {
+                    case "0":
+                        break;
+                    case "1":
+                        Console.WriteLine("\nDostepne warzywa:" + "\n");
+                        produkty.warzywa.listawarzyw(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_warzywa();
+
+
+                        break;
+                    case "2":
+                        Console.WriteLine("\nDostepne owoce:" + "\n");
+                        produkty.owoce.listaowocow(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_owoce();
+                        break;
+                    case "3":
+                        Console.WriteLine("\nDostepne alkohole:" + "\n");
+                        produkty.alkohole.listaalkoholi(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_alkohole();
+                        break;
+                    case "4":
+                        Console.WriteLine("\nDostepne platki:" + "\n");
+                        produkty.platki.listaplatkow(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_platki();
+                        break;
+                    case "5":
+                        Console.WriteLine("\nDostepne pzrekaski:" + "\n");
+                        produkty.przekaski.listaprzekaskow(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_przekaski();
+                        break;
+
+
+                    default:
+                        Console.WriteLine("Błąd wpisz liczbę Od 1 do 5");
+                        break;
+                }
+            }
+        }
+            
+        
+       
+
+        public class zmiana
+        {
+            public static void zmianaasortymentu_warzywa(ref string[] tab6)
+            {
+                StreamWriter sw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\warzywa ilosc.txt");
+                for (int i = 0; i < tab6.Length; i++)
+                {
+                    sw.WriteLine(tab6[i]);
+                }
+                sw.Close();
+            }
+            public static void zmianaasortymentu_owoce(ref string[] tab6)
+            {
+                StreamWriter sw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\listaowocow.txt");
+                for (int i = 0; i < tab6.Length; i++)
+                {
+                    sw.WriteLine(tab6[i]);
+                }
+                sw.Close();
+            }
+            public static void zmianaasortymentu_platki(ref string[] tab6)
+            {
+                StreamWriter sw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\iloscplatkow.txt");
+                for (int i = 0; i < tab6.Length; i++)
+                {
+                    sw.WriteLine(tab6[i]);
+                }
+                sw.Close();
+            }
+            public static void zmianaasortymentu_alkohole(ref string[] tab6)
+            {
+                StreamWriter sw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\iloscalkoholii.txt");
+                for (int i = 0; i < tab6.Length; i++)
+                {
+                    sw.WriteLine(tab6[i]);
+                }
+                sw.Close();
+            }
+            public static void zmianaasortymentu_przekaski(ref string[] tab6)
+            {
+                StreamWriter sw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\iloscprzekaskow.txt");
+                for (int i = 0; i < tab6.Length; i++)
+                {
+                    sw.WriteLine(tab6[i]);
+                }
+                sw.Close();
+            }
+
+            internal static void zmianaasortymentu_warzywa()
+            {
+                
+            }
+            internal static void zmianaasortymentu_owoce()
+            {
+
+            }
+            internal static void zmianaasortymentu_platki()
+            {
+
+            }
+            internal static void zmianaasortymentu_alkohole()
+            {
+
+            }
+            internal static void zmianaasortymentu_przekaski()
+            {
+
+            }
+        }
+
+        public class lista 
+        {
+            public static void listakategorii()
+            {
+                string[] lines = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Asortyment.txt");
+
+
+                foreach (string line in lines)
+                {
+
+                    Console.WriteLine( line);
+                }
+                string wybór = Console.ReadLine();
+                
+                switch (wybór)
+                {
+                    case "0":                       
+                        break;
+                    case "1":
+                        Console.WriteLine("\nDostepne warzywa:" + "\n");
+                        produkty.warzywa.listawarzyw(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_warzywa();
+
+
+                        break;
+                    case "2":
+                        Console.WriteLine("\nDostepne owoce:"+"\n");
+                        produkty.owoce.listaowocow(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_owoce();
+                        break;
+                    case "3":
+                        Console.WriteLine("\nDostepne alkohole:" + "\n");
+                        produkty.alkohole.listaalkoholi(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_alkohole();
+                        break;
+                    case "4":
+                        Console.WriteLine("\nDostepne platki:" + "\n");
+                        produkty.platki.listaplatkow(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_platki();
+                        break;
+                    case "5":
+                        Console.WriteLine("\nDostepne pzrekaski:" + "\n");
+                        produkty.przekaski.listaprzekaskow(ref wybór);
+                        obliczenie.wybor.twojwybor();
+                        zmiana.zmianaasortymentu_przekaski();
+                        break;
+
+                    
+                    default:
+                        Console.WriteLine("Błąd wpisz liczbę Od 1 do 5");
+                        break;
+                }
+                
+                
+            }
+
+            internal static void listakategorii(string wybór)
+            {
+                
+            }
+        }
+        
+        public class przekaski : produkty
+        {
+            public static void listaprzekaskow(ref string wybór)
+            {
+                string[] lines = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\listaprzekaskow.txt");
+                string[] lines1 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\iloscprzekaskow.txt");
+                string[] lines2 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\canyprzekasek.txt");
+                obliczenie.obliczeniaasortymentu(ref lines, ref lines1, ref wybór,ref lines2);
+            }
+        }
+        public class platki : produkty
+        {
+            public static void listaplatkow(ref string wybór)
+            {
+                string[] lines = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\platki.txt");
+                string[] lines1 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\iloscplatkow.txt");
+                string[] lines2 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\cenyplatkow.txt");
+                obliczenie.obliczeniaasortymentu(ref lines, ref lines1, ref wybór, ref lines2);
+            }
+        }
+
+        public class alkohole : produkty
+        {
+            public static void listaalkoholi(ref string wybór)
+            {
+                string[] lines = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\listaalkoholi.txt");
+                string[] lines1 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\iloscalkoholii.txt");
+                string[] lines2 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\cenyalkoholi.txt");
+                obliczenie.obliczeniaasortymentu(ref lines, ref lines1, ref wybór, ref lines2);
+            }
+        }
+        public class owoce : produkty
+        {
+            public static void listaowocow(ref string wybór)
+            {
+                string[] lines = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\owoce.txt");
+                string[] lines1 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\listaowocow.txt");
+                string[] lines2 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\cenyowocow.txt");
+                obliczenie.obliczeniaasortymentu(ref lines, ref lines1, ref wybór, ref lines2);
+            }
+        }
+        public class warzywa : produkty
+        {
+            public static void listawarzyw(ref string wybór)
+            {
+                string[] lines = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Warzywa.txt");
+                string[] lines1 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\warzywa ilosc.txt");
+                string[] lines2 = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\cenywarzyw.txt");
+                obliczenie.obliczeniaasortymentu(ref lines, ref lines1, ref wybór, ref lines2);
+            }
+        }
+    }
+
+    class Sklep 
+    {
+        string Nazwa = "Nasz Sklep 1.0";
+        static void Main(string[] args)
+        {
+            Sklep Tytuł = new Sklep();
+            TextWriter twtw = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Rachunek.txt");
+            twtw.Close();
+            TextWriter xd = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\Suma cen.txt");
+            xd.Close();
+            TextWriter cho_gath = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\nazwa_produktu(cho_gath).txt");
+            cho_gath.Close();
+
+            TextWriter  lee_sin = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\ilosc_produktow(lee_sin).txt");
+            lee_sin.Close();
+
+            TextWriter  k_sante = new StreamWriter(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\cena_jednostkowa(k_sante).txt");
+            k_sante.Close();
+            int x = 1;
+            do
+            {
+                Console.WriteLine("___" + Tytuł.Nazwa + "___" + "\n" +
+            "0.wyjdz z programu" + "\n" +
+            "1.Produkty" + "\n" +
+             
+            "2.Koszyk Klienta" + "\n" +
+            
+            "3.historia sprzedarzy");
+                //aplikacja
+                string klient_nasz_pan = Console.ReadLine();
+                switch (klient_nasz_pan)
+                {
+                    case "0":
+                        x = 0;
+                        break;
+
+
+                    case "1":                                              
+                        produkty.lista.listakategorii();
+                        break;
+                        
+                    
+                        
+
+                       
+                    case "2":                                            
+                        koszyk_klienta.koszyk();
+                        break;
+                   
+
+                        break;
+                    case "3":
+                        Console.WriteLine("Podaj hasło: ");
+                        string hasło;
+                        int i = 0;
+                        do
+                        {
+                            hasło = Console.ReadLine();
+                            if (hasło != "1234" && i < 3)
+                            {
+                                Console.WriteLine("Złe hasło\nPodaj hasło: ");                              
+                                i++;
+                            }
+                            if(i==3)
+                            {
+                                Console.WriteLine("\n!!!WASTED!!!"+ "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!" + "\n!!!WASTED!!!");
+                                Thread.Sleep(1000000);
+                            }
+                        } while (hasło != "1234");
+
+                            string[] marmolada = System.IO.File.ReadAllLines(@"C:\Users\johnp\Desktop\Obiektowe\Zaliczenie\Zaliczenie\TextFile1.txt");
+                            foreach (string linia in marmolada)
+                            {
+                                Console.WriteLine(linia);
+                            }
+                        
+                        break;
+
+                    default:
+                        Console.WriteLine("Wpisz liczbę Od 0 do 5");
+                        break;
+
+                }
+
+
+            } while (x != 0);
+            
+        }
+    }
+    
+}
